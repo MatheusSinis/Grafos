@@ -87,4 +87,7 @@ class Vertice
         string getName(){
             return name;
         }
+
+        void setVisited(bool vis){visited = vis;}
+        bool getVisited(){return visited;}
 };
