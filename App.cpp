@@ -70,7 +70,8 @@ int main()
 
     Grafo *grafo = new Grafo(vertices);
     grafo->organize();
-    grafo->buscaLargura(grafo->getVertices()[0]);
+    // grafo->buscaLargura(grafo->getVertices()[0]);
+    grafo->buscaProfundidade(grafo->getVertices()[0]);
     grafo->printGrafo();
 
     cout << endl;

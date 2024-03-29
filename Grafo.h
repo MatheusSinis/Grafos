@@ -7,9 +7,10 @@ class Grafo
 {
 private:                        // atributos privados da classe Grafo
     vector<Vertice *> vertices; // Conjunto de vertices do grafo
+    int cicles;
 
 public: // atributos públicos da classe Grafo
-    Grafo(vector<Vertice *> vertices) : vertices(vertices)
+    Grafo(vector<Vertice *> vertices) : vertices(vertices), cicles(0)
     {
         // Testa existência de parâmetros
         if (vertices.empty())
@@ -17,7 +18,7 @@ public: // atributos públicos da classe Grafo
     }
 
     // Construtor da classe sem parâmetros
-    Grafo() : vertices({})
+    Grafo() : vertices({}), cicles(0)
     {
     }
 
@@ -25,10 +26,13 @@ public: // atributos públicos da classe Grafo
     ~Grafo()
     {
         vertices.clear(); // limpa conjunto de vertices
+        cicles = 0;
     }
 
     void printGrafo()
     {
+        cout << "Ciclos: " << cicles << endl;
+        cout << endl;
         for (Vertice *i : vertices)
         {
             i->printVertice();
@@ -81,4 +85,34 @@ public: // atributos públicos da classe Grafo
     }
 
     vector<Vertice*> getVertices(){return vertices;}
+
+    void buscaProfundidade(Vertice* start){
+        stack<Vertice *> stack;
+        Vertice* aux = new Vertice();
+        vector<Vertice*> neighbors;
+        
+        start->setVisited(true);
+        stack.push(start);
+
+        do
+        {
+            aux = stack.top();
+            // cout << aux->getName() << endl;
+            stack.pop();
+
+            neighbors = aux->getNeighbors();
+            for (int i = (neighbors.size()-1); i >= 0; i--) {
+                if(!neighbors[i]->getVisited()){
+                    neighbors[i]->setVisited(true);
+                    neighbors[i]->setPredecessor(aux);
+                    stack.push(neighbors[i]);
+                }else if(neighbors[i] != aux->getPredecessor()){
+                    cicles++;
+                }
+            }
+
+        } while (!stack.empty());
+
+        cicles = cicles/2;
+    }
 };
