@@ -11,11 +11,11 @@ class Vertice
 {
     private:                       // Atributos privados
         string name;               // Nome ou rótulo
-        vector<string> neighbors; // Vertices adjacentes ou vizinhos
+        vector<Vertice*> neighbors; // Vertices adjacentes ou vizinhos
         bool visited;              // Campo booleano para identificar a visitação à esse vértice, utilizado para busca
 
     public: // Atributos públicos
-        Vertice(string name, vector<string> neighbors) : name(name), neighbors(neighbors), visited(false)
+        Vertice(string name, vector<Vertice*> neighbors) : name(name), neighbors(neighbors), visited(false)
         {
             // Testa a existência dos parâmetros
             if (name.empty() || neighbors.empty())
@@ -52,7 +52,7 @@ class Vertice
                 cout << "Vizinhos: ";
                 for (int i = 0; i < neighbors.size(); i++)
                 {
-                    cout << neighbors[i];
+                    cout << neighbors[i]->getName();
 
                     if(i != (neighbors.size()-1)){
                         cout << ", ";
@@ -68,23 +68,21 @@ class Vertice
             cout << "Visitado: " << visited << endl;
         }
 
-        void setNeighbor(string neighbor){
-            if(neighbor.empty()) throw runtime_error("Vizinho não informado");
+        void setNeighbor(Vertice* neighbor){
+            if(!neighbor) throw runtime_error("Vizinho não informado");
 
-            if(neighbor != "[]"){
-                neighbors.push_back(neighbor);
-                sort(neighbors.begin(), neighbors.end());
-                neighbors.erase(unique(neighbors.begin(), neighbors.end()), neighbors.end());
-            }
+            neighbors.push_back(neighbor);
+            sort(neighbors.begin(), neighbors.end());
+            neighbors.erase(unique(neighbors.begin(), neighbors.end()), neighbors.end());
         }
         
-        void setNeighbors(vector<string> neighborsVector){
-            if(neighborsVector.empty()) throw runtime_error("Vizinho não informado");
+        void setNeighbors(vector<Vertice*> neighborsVector){
+            if(neighborsVector.empty()) throw runtime_error("Vizinhos não informados");
 
             neighbors = neighborsVector;
         }
 
-        vector<string> getNeighbors(){return neighbors;}
+        vector<Vertice*> getNeighbors(){return neighbors;}
 
         string getName(){
             return name;

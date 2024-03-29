@@ -58,8 +58,10 @@ int main()
         neighborsNames = splitString(neighbors, ',');
 
         for(string name : neighborsNames){
-            if(name != vertice->getName()){
-                vertice->setNeighbor(name);
+            for(Vertice* vert : vertices){
+                if(name == vert->getName()){
+                    vertice->setNeighbor(vert);
+                }
             }
         }
     }

@@ -29,14 +29,14 @@ class Grafo{
         }
 
         void organize(){
-            vector<string> neighbors;
+            vector<Vertice*> neighbors;
             for(Vertice* vertice : vertices){
                 neighbors = vertice->getNeighbors();
 
-                for(string neighbor : neighbors){
+                for(Vertice* neighbor : neighbors){
                     for(Vertice* vert : vertices){
-                        if(neighbor == vert->getName()){
-                            vert->setNeighbor(vertice->getName());
+                        if(neighbor->getName() == vert->getName()){
+                            vert->setNeighbor(vertice);
                         }
                     }
                 }
