@@ -88,7 +88,7 @@ int main()
     grafo->organize();
     
     // grafo->buscaLargura(grafo->getVertices()[0]);
-    // grafo->buscaProfundidade(grafo->getVertices()[0]);
+    grafo->buscaProfundidade(grafo->getVertices()[0]);
     
     //Printa o grafo
     grafo->printGrafo();

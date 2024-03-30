@@ -105,8 +105,21 @@ public: // atributos públicos da classe Grafo
             }
 
         } while (!queue.empty());
-    }
 
+        // Verificando se todos os vértices do grafo foram visitados
+        for (Vertice *vet : vertices)
+        {
+            if(!vet->getVisited()){
+                // buscaLargura(vet);
+            }
+        }
+
+        //Limpar valores de "visited"
+        for (Vertice *vet : vertices){
+            vet->setVisited(false);
+        }
+    }
+    
     // Método de busca em profundidade, contando ciclos, utilizando pilha
     // Parâmetros: vértice de início da busca
     void buscaProfundidade(Vertice *start)
@@ -128,30 +141,43 @@ public: // atributos públicos da classe Grafo
             // cout << aux->getName() << endl;
             stack.pop();
 
-            //Obtem vizinhos do vértice do topo da pilha
+            // Obtem vizinhos do vértice do topo da pilha
             neighbors = aux->getNeighbors();
 
-            //Para cada vizinho (Iteração está sendo feita inversa para manter ordem alfabética dos vizinhos)
+            // Para cada vizinho (Iteração está sendo feita inversa para manter ordem alfabética dos vizinhos)
             for (int i = (neighbors.size() - 1); i >= 0; i--)
             {
-                //Testa se vizinho foi visitado
+                // Testa se vizinho foi visitado
                 if (!neighbors[i]->getVisited())
                 {
-                    //Se não foi, o define como visitado, coloca o topo da pilha como seu antecessor e adiciona na pilha
+                    // Se não foi, o define como visitado, coloca o topo da pilha como seu antecessor e adiciona na pilha
                     neighbors[i]->setVisited(true);
                     neighbors[i]->setPredecessor(aux);
                     stack.push(neighbors[i]);
                 }
                 else if (neighbors[i]->getPredecessor() != aux) // Se foi visitado e antecessor for diferente do topo da pilha
                 {
-                    //Adiciona 1 no número de ciclos
+                    // Adiciona 1 no número de ciclos
                     cicles++;
                 }
             }
 
         } while (!stack.empty());
 
-        //Divide número de ciclos por 2, pois etá sendo contado duas vezes cada ciclo
+        // Verificando se todos os vértices do grafo foram visitados
+        for (Vertice *vet : vertices)
+        {
+            if(!vet->getVisited()){
+                buscaProfundidade(vet);
+            }
+        }
+
+        //Limpar valores de "visited"
+        for (Vertice *vet : vertices){
+            vet->setVisited(false);
+        }
+
+        // Divide número de ciclos por 2, pois etá sendo contado duas vezes cada ciclo
         cicles = cicles / 2;
     }
 };
