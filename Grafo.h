@@ -180,4 +180,39 @@ public: // atributos públicos da classe Grafo
         // Divide número de ciclos por 2, pois etá sendo contado duas vezes cada ciclo
         cicles = cicles / 2;
     }
+ 
+    void Permutacao(Vertice *start)
+    {
+        
+        string combinacao = "";
+        vector<Vertice *> neighbors;
+
+
+        // Gerar e imprimir as demais permutações
+        while (next_permutation(vertices.begin() , vertices.end(), [](Vertice *a, Vertice *b) {
+            return a->getName() < b->getName();
+        }))
+        {    
+        string combinacao = "";
+            for (Vertice *vertice : vertices)
+            {
+                cout << combinacao + vertice->getName() + ' '; //gera uma combinação e guarda em combinacao 
+
+            }
+            cout << combinacao << '\n';
+            // Verifica se há vértices no grafo
+
+
+    for (Vertice *vertice : vertices) {
+        // Obtém os vizinhos do vértice atual
+        vector<Vertice *> vizinhos = vertice->getNeighbors();
+
+        for (Vertice *vizinho : vizinhos) {
+            cout << vizinho->getName() << " ";
+        }
+        cout << endl;
+    }
+        }
+    }
+
 };
