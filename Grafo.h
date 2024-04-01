@@ -2,6 +2,9 @@
 #include "Vertice.h"
 #include <stack>
 #include <queue>
+#include <sstream>
+#include <set>
+
 
 // Declaração da classe Grafo
 class Grafo
@@ -109,17 +112,19 @@ public: // atributos públicos da classe Grafo
         // Verificando se todos os vértices do grafo foram visitados
         for (Vertice *vet : vertices)
         {
-            if(!vet->getVisited()){
+            if (!vet->getVisited())
+            {
                 // buscaLargura(vet);
             }
         }
 
-        //Limpar valores de "visited"
-        for (Vertice *vet : vertices){
+        // Limpar valores de "visited"
+        for (Vertice *vet : vertices)
+        {
             vet->setVisited(false);
         }
     }
-    
+
     // Método de busca em profundidade, contando ciclos, utilizando pilha
     // Parâmetros: vértice de início da busca
     void buscaProfundidade(Vertice *start)
@@ -167,52 +172,94 @@ public: // atributos públicos da classe Grafo
         // Verificando se todos os vértices do grafo foram visitados
         for (Vertice *vet : vertices)
         {
-            if(!vet->getVisited()){
+            if (!vet->getVisited())
+            {
                 buscaProfundidade(vet);
             }
         }
 
-        //Limpar valores de "visited"
-        for (Vertice *vet : vertices){
+        // Limpar valores de "visited"
+        for (Vertice *vet : vertices)
+        {
             vet->setVisited(false);
         }
 
         // Divide número de ciclos por 2, pois etá sendo contado duas vezes cada ciclo
         cicles = cicles / 2;
     }
- 
-    void Permutacao(Vertice *start)
-    {
-        
-        string combinacao = "";
-        vector<Vertice *> neighbors;
 
+   void Permutacao(Vertice *start)
+{
+    // Função auxiliar para verificar se uma permutação representa um caminho válido
+    auto verificarCaminho = [&](const string &caminho) {
+        vector<string> verticesDoCaminho;
+        stringstream ss(caminho);
+        string token;
 
-        // Gerar e imprimir as demais permutações
-        while (next_permutation(vertices.begin() , vertices.end(), [](Vertice *a, Vertice *b) {
-            return a->getName() < b->getName();
-        }))
-        {    
-        string combinacao = "";
-            for (Vertice *vertice : vertices)
-            {
-                cout << combinacao + vertice->getName() + ' '; //gera uma combinação e guarda em combinacao 
+        // Divide a string caminho em tokens separados por espaço
+        while (getline(ss, token, ' ')) {
+            verticesDoCaminho.push_back(token);
+        }
 
+        // Verifica os vizinhos entre cada par de vértices consecutivos no caminho
+        for (int i = 0; i < verticesDoCaminho.size() - 1; ++i) {
+            Vertice *verticeAtual = nullptr;
+            Vertice *proxVertice = nullptr;
+
+            // Encontra os vértices correspondentes na lista de vértices
+            for (Vertice *v : vertices) {
+                if (v->getName() == verticesDoCaminho[i]) {
+                    verticeAtual = v;
+                }
+                if (v->getName() == verticesDoCaminho[i + 1]) {
+                    proxVertice = v;
+                }
             }
-            cout << combinacao << '\n';
-            // Verifica se há vértices no grafo
 
-
-    for (Vertice *vertice : vertices) {
-        // Obtém os vizinhos do vértice atual
-        vector<Vertice *> vizinhos = vertice->getNeighbors();
-
-        for (Vertice *vizinho : vizinhos) {
-            cout << vizinho->getName() << " ";
+            // Verifica se o próximo vértice é um vizinho do vértice atual
+            if (verticeAtual && proxVertice) {
+                bool encontrado = false;
+                for (Vertice *vizinho : verticeAtual->getNeighbors()) {
+                    if (vizinho == proxVertice) {
+                        encontrado = true;
+                        break;
+                    }
+                }
+                // Se o próximo vértice não for vizinho do vértice atual, o caminho não é válido
+                if (!encontrado) {
+                    return false;
+                }
+            } else {
+                // Se não encontrar algum dos vértices na permutação, o caminho não é válido
+                return false;
+            }
         }
-        cout << endl;
+        return true;
+    };
+
+    int numVertices = vertices.size();
+
+    // Gerar e imprimir permutações de todos os comprimentos possíveis
+    for (int comprimento = 3; comprimento <= numVertices; ++comprimento) {  //erro possivel aqui, precisa chegar ao ultimo vertice e a possivel e contada no comprimento
+        string caminhoAtual;
+       
+        do {
+            caminhoAtual = "";
+            for (int i = 0; i < comprimento; ++i) {
+                caminhoAtual += vertices[i]->getName() + " ";
+            }
+                caminhoAtual += caminhoAtual[0];
+            // Verifica se a permutação representa um caminho válido
+            if (verificarCaminho(caminhoAtual)) {
+                cout << "Caminho válido"  << ": " << caminhoAtual << endl;
+            } else {
+                cout << "Caminho inválido"  << ": " << caminhoAtual << endl;
+            }
+        } while (next_permutation(vertices.begin(), vertices.begin() + comprimento, [](Vertice *a, Vertice *b) {
+            return a->getName() < b->getName();
+        }));
     }
-        }
-    }
+}
+
 
 };

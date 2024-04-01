@@ -79,7 +79,6 @@ int main()
             }
         }
     }
-
     //Quebra de linha
     cout << endl;
 
@@ -92,7 +91,7 @@ int main()
     grafo->Permutacao(grafo->getVertices()[0]);
     
     //Printa o grafo
-    grafo->printGrafo();
+    //grafo->printGrafo();
 
     //Quebra de linha e saída indicando fim do programa
     cout << endl;
