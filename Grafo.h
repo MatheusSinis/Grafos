@@ -74,8 +74,10 @@ public: // atributos públicos da classe Grafo
     }
 
     //Método para setar todos os vertices que foram visitados como não visitados, para não afetar buscas futuras
-    void cleanVertices(){
+    void cleanVertices(Vertice* notVertice){
         for(int i = 0; i < vertices.size(); i++){
+            if(vertices[i] == notVertice) continue;
+            
             if(vertices[i]->getVisited()){
                 vertices[i]->setVisited(false);
             }
@@ -88,7 +90,7 @@ public: // atributos públicos da classe Grafo
 
     // Método de busca em largura, utilizando fila
     // Parâmetro: vértice de início da busca
-    void buscaLargura(Vertice *start)
+    void wfs(Vertice *start, int recur = 0)
     {
         //Teste de parâmetros
         if(!start) throw runtime_error("Parametro nao informado");
@@ -96,6 +98,7 @@ public: // atributos públicos da classe Grafo
         // Inicia fila e variável de auxílio
         queue<Vertice *> queue;
         Vertice *aux = new Vertice();
+        cicles = 0;
 
         // Adiciona vértice do início da busca a fila e o define como visitado
         start->setVisited(true);
@@ -117,6 +120,8 @@ public: // atributos públicos da classe Grafo
                 {
                     vert->setVisited(true);
                     queue.push(vert);
+                }else if(vert == start){
+                    cicles++;
                 }
             }
 
@@ -126,14 +131,17 @@ public: // atributos públicos da classe Grafo
         for (int i = 0; i < vertices.size(); i++)
         {
             if(!vertices[i]->getVisited()){
-                buscaLargura(vertices[i]);
+                wfs(vertices[i]);
             }
         }
+
+        // Divide número de ciclos por 2, pois etá sendo contado duas vezes cada ciclo
+        // if(recur == 0) cicles = cicles / 2;
     }
     
     // Método de busca em profundidade, contando ciclos, utilizando pilha
     // Parâmetros: vértice de início da busca
-    void buscaProfundidade(Vertice *start)
+    void dfs(Vertice *start, bool recur = true)
     {
         //Teste de parâmetros
         if(!start) throw runtime_error("Parametro nao informado");
@@ -152,6 +160,7 @@ public: // atributos públicos da classe Grafo
         {
             // Obtem valor do vertice do topo da pilha e o retira
             aux = stack.top();
+            aux->setVisited(true);
             stack.pop();
 
             // Obtem vizinhos do vértice do topo da pilha
@@ -163,12 +172,11 @@ public: // atributos públicos da classe Grafo
                 // Testa se vizinho foi visitado
                 if (!neighbors[i]->getVisited())
                 {
-                    // Se não foi, o define como visitado, coloca o topo da pilha como seu antecessor e adiciona na pilha
-                    neighbors[i]->setVisited(true);
+                    // Se não foi, coloca o topo da pilha como seu antecessor e adiciona na pilha
                     neighbors[i]->setPredecessor(aux);
                     stack.push(neighbors[i]);
                 }
-                else if (neighbors[i]->getPredecessor() != aux) // Se foi visitado e antecessor for diferente do topo da pilha
+                else if (neighbors[i] == start && neighbors[i] != aux->getPredecessor()) // Se foi visitado e antecessor for diferente do topo da pilha
                 {
                     // Adiciona 1 no número de ciclos
                     cicles++;
@@ -179,12 +187,28 @@ public: // atributos públicos da classe Grafo
         // Verificando se todos os vértices do grafo foram visitados
         for (int i = 0; i < vertices.size(); i++)
         {
-            if(!vertices[i]->getVisited()){
-                buscaProfundidade(vertices[i]);
+            if(!vertices[i]->getVisited() && recur){
+                dfs(vertices[i]);
+            }
+        }
+    }
+
+    int countCicles(string mode){
+        if(mode.empty()) throw runtime_error("Parametros vazios");
+
+        if(mode == "dfs"){
+            cicles = 0;
+            for(int i = 0; i < vertices.size(); i++){
+                dfs(vertices[i], false);
+                cleanVertices(vertices[i]);
+            }
+            cicles = cicles / 2;
+        }else if(mode == "wfs"){
+            for(int i = 0; i < vertices.size(); i++){
+                wfs(vertices[i]);
             }
         }
 
-        // Divide número de ciclos por 2, pois etá sendo contado duas vezes cada ciclo
-        cicles = cicles / 2;
+        return cicles;
     }
 };

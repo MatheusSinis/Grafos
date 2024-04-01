@@ -91,9 +91,8 @@ int main()
     // grafo->buscaLargura(grafo->getVertices()[0]);
     // grafo->cleanVertices();
 
-    //Busca em profundidade com contagem de ciclos, e após isso limpar os valores de predecessor e visited dos vértices
-    grafo->buscaProfundidade(grafo->getVertices()[0]);
-    grafo->cleanVertices();
+    //Busca em profundidade com contagem de ciclos
+    grafo->countCicles("dfs");
 
     //Printa o grafo
     grafo->printGrafo();
