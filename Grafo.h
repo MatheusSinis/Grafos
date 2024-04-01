@@ -238,6 +238,7 @@ public: // atributos públicos da classe Grafo
     };
 
     int numVertices = vertices.size();
+    int ciclos = 0;
 
     // Gerar e imprimir permutações de todos os comprimentos possíveis
     for (int comprimento = 3; comprimento <= numVertices; ++comprimento) {  //erro possivel aqui, precisa chegar ao ultimo vertice e a possivel e contada no comprimento
@@ -251,14 +252,18 @@ public: // atributos públicos da classe Grafo
                 caminhoAtual += caminhoAtual[0];
             // Verifica se a permutação representa um caminho válido
             if (verificarCaminho(caminhoAtual)) {
-                cout << "Caminho válido"  << ": " << caminhoAtual << endl;
-            } else {
-                cout << "Caminho inválido"  << ": " << caminhoAtual << endl;
-            }
-        } while (next_permutation(vertices.begin(), vertices.begin() + comprimento, [](Vertice *a, Vertice *b) {
+                cout << "Caminho valido"  << ": " << caminhoAtual << endl;
+                ciclos++;
+            } 
+        } while (next_permutation(vertices.begin(), vertices.end() , [](Vertice *a, Vertice *b) {
             return a->getName() < b->getName();
         }));
     }
+
+            // Print no número de ciclos de um grafo
+        cout << "Ciclos: " << ciclos << endl;
+        cout << endl;
+
 }
 
 
