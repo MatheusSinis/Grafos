@@ -4,6 +4,7 @@
 #include <queue>
 #include <sstream>
 #include <set>
+#include <list>
 
 // Declaração da classe Grafo
 class Grafo
@@ -249,7 +250,7 @@ public: // atributos públicos da classe Grafo
         };
 
         int numVertices = vertices.size();
-        int ciclos = 0;
+        list<string> ciclosValidos;
 
         // Gerar e imprimir permutações de todos os comprimentos possíveis
         for (int comprimento = 3; comprimento <= numVertices; ++comprimento)
@@ -262,24 +263,45 @@ public: // atributos públicos da classe Grafo
                 caminhoAtual = "";
                 for (int i = 0; i < comprimento; ++i)
                 {
-                    caminhoAtual += vertices[i]->getName() + " ";
+                    caminhoAtual += vertices[i]->getName();
                 }
-                caminhoAtual += caminhoAtual[0];
-                    // Verifica se a permutação representa um caminho válido
-                    if (verificarCaminho(caminhoAtual) && caminhoAntigo.substr(0,comprimento-1) != caminhoAtual.substr(0,comprimento-1))
+                // caminhoAtual += caminhoAtual[0];
+                //  Verifica se a permutação representa um caminho válido
+                if (verificarCaminho(caminhoAtual) && caminhoAntigo.substr(0, comprimento - 1) != caminhoAtual.substr(0, comprimento - 1))
+                {
+                    // cout << caminhoAntigo.substr(0,comprimento-1) <<"\n" << caminhoAtual.substr(0,comprimento-1) << "\n\n";
+                    // cout << "Caminho valido"<< caminhoAtual << endl;
+                    sort(caminhoAtual.begin(), caminhoAtual.end());
+
+                    // Verifica se o ciclo já foi contado
+                    bool cicloJaContado = false;
+                    for (const auto &ciclo : ciclosValidos)
                     {
-                        cout << caminhoAntigo.substr(0,comprimento-1) <<"\n" << caminhoAtual.substr(0,comprimento-1) << "\n\n";
-                        cout << "Caminho valido"<< endl;
-                        //cout << caminhoAtual << "\n" << caminhoAntigo << endl;
-                        ciclos++;
-                        caminhoAntigo = caminhoAtual;
+                        if (ciclo == caminhoAtual)
+                        {
+                            cicloJaContado = true;
+                            break;
+                        }
                     }
+
+                    // Se o ciclo não foi contado antes, adiciona à lista de ciclos válidos e incrementa a contagem
+                    if (!cicloJaContado)
+                    {
+                        ciclosValidos.push_back(caminhoAtual);
+                    }
+
+                    caminhoAntigo = caminhoAtual;
+                }
             } while (next_permutation(vertices.begin(), vertices.end(), [](Vertice *a, Vertice *b)
                                       { return a->getName() < b->getName(); }));
         }
 
+        for (const auto &str : ciclosValidos)
+        {
+            cout << str << str[0] << endl;
+        }
+
         // Print no número de ciclos de um grafo
-        cout << "Ciclos: " << ciclos << endl;
-        cout << endl;
+        cout << "CiclosV: " << ciclosValidos.size() << endl;
     }
 };

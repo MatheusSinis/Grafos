@@ -8,8 +8,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": true,
-      "cwd": "c:/Users/caior/Downloads/grafo/Grafos",
-      "program": "c:/Users/caior/Downloads/grafo/Grafos/build/Debug/outDebug",
+      "cwd": "c:/Users/caior/Downloads/grafo/Grafos/Grafos",
+      "program": "c:/Users/caior/Downloads/grafo/Grafos/Grafos/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [
