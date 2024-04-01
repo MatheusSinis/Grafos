@@ -73,10 +73,26 @@ public: // atributos públicos da classe Grafo
         }
     }
 
+    //Método para setar todos os vertices que foram visitados como não visitados, para não afetar buscas futuras
+    void cleanVertices(){
+        for(int i = 0; i < vertices.size(); i++){
+            if(vertices[i]->getVisited()){
+                vertices[i]->setVisited(false);
+            }
+
+            if(vertices[i]->getPredecessor()){
+                vertices[i]->setPredecessor(nullptr);
+            }
+        }
+    }
+
     // Método de busca em largura, utilizando fila
     // Parâmetro: vértice de início da busca
     void buscaLargura(Vertice *start)
     {
+        //Teste de parâmetros
+        if(!start) throw runtime_error("Parametro nao informado");
+
         // Inicia fila e variável de auxílio
         queue<Vertice *> queue;
         Vertice *aux = new Vertice();
@@ -107,16 +123,11 @@ public: // atributos públicos da classe Grafo
         } while (!queue.empty());
 
         // Verificando se todos os vértices do grafo foram visitados
-        for (Vertice *vet : vertices)
+        for (int i = 0; i < vertices.size(); i++)
         {
-            if(!vet->getVisited()){
-                // buscaLargura(vet);
+            if(!vertices[i]->getVisited()){
+                buscaLargura(vertices[i]);
             }
-        }
-
-        //Limpar valores de "visited"
-        for (Vertice *vet : vertices){
-            vet->setVisited(false);
         }
     }
     
@@ -124,6 +135,9 @@ public: // atributos públicos da classe Grafo
     // Parâmetros: vértice de início da busca
     void buscaProfundidade(Vertice *start)
     {
+        //Teste de parâmetros
+        if(!start) throw runtime_error("Parametro nao informado");
+        
         // Inicialização da pilha e variáveis auxiliares
         stack<Vertice *> stack;
         Vertice *aux = new Vertice();
@@ -138,7 +152,6 @@ public: // atributos públicos da classe Grafo
         {
             // Obtem valor do vertice do topo da pilha e o retira
             aux = stack.top();
-            // cout << aux->getName() << endl;
             stack.pop();
 
             // Obtem vizinhos do vértice do topo da pilha
@@ -161,20 +174,14 @@ public: // atributos públicos da classe Grafo
                     cicles++;
                 }
             }
-
         } while (!stack.empty());
 
         // Verificando se todos os vértices do grafo foram visitados
-        for (Vertice *vet : vertices)
+        for (int i = 0; i < vertices.size(); i++)
         {
-            if(!vet->getVisited()){
-                buscaProfundidade(vet);
+            if(!vertices[i]->getVisited()){
+                buscaProfundidade(vertices[i]);
             }
-        }
-
-        //Limpar valores de "visited"
-        for (Vertice *vet : vertices){
-            vet->setVisited(false);
         }
 
         // Divide número de ciclos por 2, pois etá sendo contado duas vezes cada ciclo

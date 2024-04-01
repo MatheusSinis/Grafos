@@ -120,9 +120,6 @@ class Vertice
 
         //Alterar valor do predecessor
         void setPredecessor(Vertice* pre){
-            //Se não houver parâmetro lançar exceção
-            if(!pre) throw runtime_error("Vizinho não informado");
-
             //variável "predecessor" recebe parâmetro
             predecessor = pre;
         }

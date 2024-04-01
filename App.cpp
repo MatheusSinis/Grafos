@@ -87,9 +87,14 @@ int main()
     Grafo *grafo = new Grafo(vertices);
     grafo->organize();
     
+    //Busca em largura, e após isso limpar os valores de predecessor e visited dos vértices
     // grafo->buscaLargura(grafo->getVertices()[0]);
+    // grafo->cleanVertices();
+
+    //Busca em profundidade com contagem de ciclos, e após isso limpar os valores de predecessor e visited dos vértices
     grafo->buscaProfundidade(grafo->getVertices()[0]);
-    
+    grafo->cleanVertices();
+
     //Printa o grafo
     grafo->printGrafo();
 
