@@ -1,4 +1,6 @@
 //Dependências
+#include <iostream>
+#include <ctime>
 #include "Grafo.h"
 #include <sstream>
 
@@ -34,7 +36,7 @@ int main()
 
     //Introdução ao programa
     cout << "Ola! Por favor digite o nome dos vertices que deseja criar. Quando desejar parar digite 'PARE'!" << endl;
-    
+
     //Enquanto entrada for diferente de 'PARE', lê o nome dos vértices
     do
     {
@@ -68,12 +70,12 @@ int main()
     for(Vertice* vertice : vertices){
         cout << "Vizinho(s) de " << vertice->getName() << " : ";
         cin >> neighbors;
-        
+
         neighborsNames = splitString(neighbors, ',');
 
         for(string name : neighborsNames){
             for(Vertice* vert : vertices){
-                if(name == vert->getName() && name != vertice->getName()){
+                if(name == vert->getName()){
                     vertice->setNeighbor(vert);
                 }
             }
@@ -87,10 +89,38 @@ int main()
     Grafo *grafo = new Grafo(vertices);
     grafo->organize();
 
-    //Contagem de ciclos usando busca em profundidade
-    // grafo->countCicles("dfs");
+    //Busca em largura, e após isso limpar os valores de predecessor e visited dos vértices
+    // grafo->buscaLargura(grafo->getVertices()[0]);
+    // grafo->cleanVertices();
 
-    // grafo->permutacao(grafo->getVertices()[0]);
+    //Busca em profundidade com contagem de ciclos
+      clock_t inicio = clock();
+    // Chame a função que você deseja medir
+      grafo->countCicles("dfs");
+
+  clock_t resultadoCaminhamento = clock() - inicio;
+  double segundosCaminhamento = static_cast<double>(resultadoCaminhamento) / CLOCKS_PER_SEC;
+  long long microssegundosCaminhamento = static_cast<long long>(segundosCaminhamento * 1000000); // Converter para microssegundos
+
+    std::cout << "Tempo de execução: " << microssegundosCaminhamento << " microssegundos" << std::endl;
+
+  clock_t inicioPermutacao = clock();
+    // Chame a função que você deseja medir
+      grafo->countCicles("dfs");
+
+  clock_t resultadoPermutacao = clock() - inicioPermutacao;
+  double segundosPermutacao = static_cast<double>(resultadoPermutacao) / CLOCKS_PER_SEC;
+  long long microssegundos = static_cast<long long>(segundosPermutacao * 1000000); // Converter para microssegundos
+
+    std::cout << "Tempo de execução: " << microssegundos << " microssegundos" << std::endl;
+  
+    grafo->countCicles("dfs");
+    // auto adjMatrix = grafo->createAdjacencyMatrix();
+    // int numCycles = grafo->countCycles(adjMatrix);
+
+    // cout << "Número de ciclos: " << numCycles << endl;
+    //grafo->permutacao(grafo->getVertices()[0]);
+
 
     //Printa o grafo
     grafo->printGrafo();
