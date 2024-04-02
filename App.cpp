@@ -73,7 +73,7 @@ int main()
 
         for(string name : neighborsNames){
             for(Vertice* vert : vertices){
-                if(name == vert->getName()){
+                if(name == vert->getName() && name != vertice->getName()){
                     vertice->setNeighbor(vert);
                 }
             }
@@ -90,10 +90,10 @@ int main()
     //Contagem de ciclos usando busca em profundidade
     // grafo->countCicles("dfs");
 
-    grafo->permutacao(grafo->getVertices()[0]);
+    // grafo->permutacao(grafo->getVertices()[0]);
 
     //Printa o grafo
-    // grafo->printGrafo();
+    grafo->printGrafo();
 
     //Quebra de linha e saída indicando fim do programa
     cout << endl;
