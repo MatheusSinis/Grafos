@@ -86,16 +86,14 @@ int main()
     //Inicializa grafo e o organiza, considerando que é um grafo não direcionado
     Grafo *grafo = new Grafo(vertices);
     grafo->organize();
-    
-    //Busca em largura, e após isso limpar os valores de predecessor e visited dos vértices
-    // grafo->buscaLargura(grafo->getVertices()[0]);
-    // grafo->cleanVertices();
 
-    //Busca em profundidade com contagem de ciclos
-    grafo->countCicles("dfs");
+    //Contagem de ciclos usando busca em profundidade
+    // grafo->countCicles("dfs");
+
+    grafo->permutacao(grafo->getVertices()[0]);
 
     //Printa o grafo
-    grafo->printGrafo();
+    // grafo->printGrafo();
 
     //Quebra de linha e saída indicando fim do programa
     cout << endl;
